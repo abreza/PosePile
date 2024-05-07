@@ -1,9 +1,6 @@
 import itertools
-
 import more_itertools
 import numpy as np
-from attrdict import AttrDict
-
 
 class JointInfo:
     def __init__(self, joints, edges=()):
@@ -21,7 +18,6 @@ class JointInfo:
         # of right wrist)
         self.mirror_mapping = [
             self.ids[JointInfo.other_side_joint_name(name)] for name in self.names]
-
         self.stick_figure_edges = []
         self.add_edges(edges)
 
@@ -48,16 +44,15 @@ class JointInfo:
     def update_names(self, new_names):
         if isinstance(new_names, str):
             new_names = new_names.split(',')
-
         self.names = new_names
-        new_ids = AttrDict()
+        new_ids = {}
         for i, new_name in enumerate(new_names):
             new_ids[new_name] = i
         self.ids = new_ids
 
     @staticmethod
     def make_id_map(names):
-        return AttrDict(dict(zip(names, itertools.count())))
+        return dict(zip(names, itertools.count()))
 
     @staticmethod
     def other_side_joint_name(name):
@@ -80,7 +75,6 @@ class JointInfo:
         edge_str = ', '.join('-'.join(self.names[i] for i in edge)
                              for edge in self.stick_figure_edges)
         return f'Joints: {joint_str}\nBones: {edge_str}'
-
 
 def get_joint2bone_mat(joint_info):
     n_bones = len(joint_info.stick_figure_edges)
