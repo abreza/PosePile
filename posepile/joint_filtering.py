@@ -1,14 +1,11 @@
 import numpy as np
 import simplepyutils as spu
 
-from posepile.util import TEST, TRAIN, VALID
-
-
 def convert_dataset(src_dataset, dst_joint_info, update_bones=True):
     mapping = get_coord_mapping(src_dataset.joint_info, dst_joint_info)
     src_dataset.examples = {
         phase: convert_examples(src_dataset.examples[phase], mapping)
-        for phase in (TRAIN, VALID, TEST)}
+        for phase in (0, 1, 2)}
 
     src_dataset.joint_info = dst_joint_info
     if update_bones:
